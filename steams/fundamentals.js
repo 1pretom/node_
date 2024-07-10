@@ -1,4 +1,4 @@
-import { Readable, Writable } from 'node:stream'
+import { Readable, Writable, Transform } from 'node:stream'
 
 //stream de leitura
 class OneToHundredSteam extends Readable {
@@ -11,10 +11,18 @@ class OneToHundredSteam extends Readable {
             if (i > 100) {
                 this.push(null);
             } else {
-                const buf = Buffer.from(i.toString())
+                const buf = Buffer.from(String(i))
                 this.push(buf);
             }
         }, 1000)
+    }
+}
+
+//stream de transformação, obrigatoriamente lê dados de um lugar e escrever dados para outro lugar, serve para comunicação entre streams
+class InverseNumberStream extends Transform {
+    _transform(chunk, encoding, callback) {
+        const transformed = Number(chunk.toString()) * -1
+        callback(null, Buffer.from(String(transformed)))
     }
 }
 
@@ -27,4 +35,5 @@ class MultiplyByTenStream extends Writable {
     }
 }
 new OneToHundredSteam()
+    .pipe(new InverseNumberStream())
     .pipe(new MultiplyByTenStream())
