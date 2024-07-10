@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
         })
         return res.writeHead(201).end()
     }
-    return res.end('Hello world!')
+    return res.writeHead(404).end('not found')
 
 })
 
