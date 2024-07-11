@@ -1,4 +1,4 @@
-import { Readable, Writable, Transform } from 'node:stream'
+import { Readable } from 'node:stream'
 
 
 class OneToHundredSteam extends Readable {
@@ -13,13 +13,17 @@ class OneToHundredSteam extends Readable {
             } else {
                 const buf = Buffer.from(String(i))
                 this.push(buf);
- 
+
             }
         }, 1000)
     }
 }
 
 fetch('http://localhost:3334', {
-    method: 'POST', 
+    method: 'POST',
     body: new OneToHundredSteam(),
+}).then(response => {
+    return response.text()
+}).then(data => {
+    console.log(data)
 })

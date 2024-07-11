@@ -8,7 +8,7 @@ class OneToHundredSteam extends Readable {
         const i = this.index++;
         setTimeout(() => {
 
-            if (i > 100) {
+            if (i > 5) {
                 this.push(null);
             } else {
                 const buf = Buffer.from(String(i))
