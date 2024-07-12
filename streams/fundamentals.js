@@ -19,6 +19,7 @@ class OneToHundredSteam extends Readable {
 }
 
 //stream de transformação, obrigatoriamente lê dados de um lugar e escrever dados para outro lugar, serve para comunicação entre streams
+//streams Mecanismos para ler e escrever dados de forma assíncrona, controlada e em partes
 class InverseNumberStream extends Transform {
     _transform(chunk, encoding, callback) {
         const transformed = Number(chunk.toString()) * -1
@@ -37,3 +38,4 @@ class MultiplyByTenStream extends Writable {
 new OneToHundredSteam()
     .pipe(new InverseNumberStream())
     .pipe(new MultiplyByTenStream())
+//pipe Encaminha os dados provindos de uma stream para outra
