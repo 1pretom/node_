@@ -15,6 +15,7 @@ import { routes } from './routes.js';
 // exemplo: http://localhost:3333/users
 
 // inicia o server http que irá lidar com as requisições HTTP
+
 const server = http.createServer(async (req, res) => {
     const { method, url } = req
 
