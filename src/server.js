@@ -1,9 +1,18 @@
 import http from 'node:http';
 import { json } from './middlewares/json.js';
-import { Database } from './database.js';
-import { randomUUID } from 'node:crypto'
+import { routes } from './routes.js';
 
-const database = new Database()
+
+// query parameters: URL Stateful => filtros, paginação, não são informações obrigatórias
+// ?userId=1 tem chave e valor, para iniciar mais, só colocar o & como no exemplo
+// exemplo: http://localhost:3333/users?userId=1&name=Washington
+
+// route parameters: serve para identificar um recurso, no exemplo está ifentificando um usuário
+// metodo, recurso e route parameters
+// exemplo: http://localhost:3333/users/1
+
+//request body: serve para envio de informações de formulário, dá pra enviar quantas informações (HTTPs)
+// exemplo: http://localhost:3333/users
 
 // inicia o server http que irá lidar com as requisições HTTP
 const server = http.createServer(async (req, res) => {
@@ -11,19 +20,11 @@ const server = http.createServer(async (req, res) => {
 
     await json(req, res)
 
-    if (method === 'GET' && url === '/users') {
-        const users = database.select('users')
-        return res.end(JSON.stringify(users))
-    }
-    if (method === 'POST' && url === '/users') {
-        const { name, email } = req.body
-        const user = {
-            id: randomUUID(),
-            name,
-            email,
-        }
-        database.insert('users', user)
-        return res.writeHead(201).end()
+    const route = routes.find(route => {
+        return route.method === method && route.path === url
+    })
+    if (route) {
+        return route.handler(req, res)
     }
     return res.writeHead(404).end('not found')
 
