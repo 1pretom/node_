@@ -32,6 +32,14 @@ export class Database {
         this.#persist()
         return data
     }
+    update(table, id, data) {
+        const rowIndex = this.#database[table].findIndex(row => row.id === id)
+        //retorna -1 se não encontrar
+        if (rowIndex > -1) {
+            this.#database[table][rowIndex] = {id, ...data}
+            this.#persist
+        }
+    }
     delete(table, id) {
         const rowIndex = this.#database[table].findIndex(row => row.id === id)
         //retorna -1 se não encontrar
