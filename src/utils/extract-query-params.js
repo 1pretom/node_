@@ -2,10 +2,12 @@
 // ['search', 'Washington'] isso é o que o primeiro split faz
 // ['page', '2']
 
-export const extractQueryParams = (query) => {
-    return query.substr(1).split('&').reduce((queryParams, para) => {
-        const [key, value] = para.split('=')
-        queryParams[key] = value
-        return queryParams
-    })
-}
+export function extractQueryParams(query) {
+    return query.substr(1).split('&').reduce((queryParams, param) => {
+      const [key, value] = param.split('=')
+  
+      queryParams[key] = value
+  
+      return queryParams
+    }, {})
+  }

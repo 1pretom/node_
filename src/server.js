@@ -30,9 +30,9 @@ const server = http.createServer(async (req, res) => {
 
         const {query, ...params } = routeParams.groups
 
-        console.log()
         req.params = params
         req.query = query ? extractQueryParams(query) : {}
+        
         return route.handler(req, res)
     }
     return res.writeHead(404).end('not found')
